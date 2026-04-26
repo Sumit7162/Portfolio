@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Github, Film, LineChart, Leaf, Mic, Globe, Code } from 'lucide-react';
+import { ExternalLink, Github, Film, LineChart, Leaf, Mic, Globe, Code, Music } from 'lucide-react';
 
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -8,6 +8,20 @@ export default function Projects() {
   const categories = ['All', 'Data Analytics', 'Web Development', 'Machine Learning'];
 
   const projects = [
+    {
+      title: "Soundify - Music Player",
+      category: "Web Development",
+      duration: "2026",
+      description: [
+        "A full-featured music streaming platform with a sleek, modern UI",
+        "Integrated audio playback with custom controls and real-time progress",
+        "Responsive design optimized for seamless listening across all devices",
+      ],
+      tags: ["React", "Tailwind CSS", "Vite", "Web Audio API"],
+      icon: <Music className="w-8 h-8 text-accent" />,
+      github: "https://github.com/Sumit7162", // Generic link as specific one wasn't provided
+      live: "https://soundify-roan.vercel.app/"
+    },
     {
       title: "ITM GOI Marketing Website",
       category: "Web Development",
