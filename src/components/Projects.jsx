@@ -20,7 +20,7 @@ export default function Projects() {
       ],
       tags: ["React 19", "Vite", "React Router 7", "Last.fm API", "Axios", "Vanilla CSS"],
       icon: <Music className="w-8 h-8 text-accent" />,
-      github: "https://github.com/Sumit7162",
+      github: "https://github.com/Sumit7162/Soundify",
       live: "https://soundify-roan.vercel.app/"
     },
     {
@@ -69,7 +69,7 @@ export default function Projects() {
       live: null
     },
     {
-      title: "Llama Indian History Chatbot — RAG-Based AI Assistant",
+      title: "ItihaasAI - Indian History Chatbot",
       category: "AI & ML",
       duration: "2024 - 2025",
       description: [
@@ -80,7 +80,7 @@ export default function Projects() {
       ],
       tags: ["React", "Vite", "TailwindCSS", "FastAPI", "LangChain", "FAISS", "Hugging Face", "Docker"],
       icon: <BookOpen className="w-8 h-8 text-accent" />,
-      github: "https://github.com/Sumit7162",
+      github: "https://github.com/Sumit7162/ItihaasAI",
       live: null
     },
     {
