@@ -117,28 +117,56 @@ export const experience = [
 
 export const projects = [
   {
-    id: 'itm-assistant',
-    title: 'ITM Assistant',
-    kicker: 'The AI layer',
-    family: 'ITM platform — 1 of 2',
-    track: 'AI & ML',
+    id: 'itm-platform',
+    title: 'ITM Gwalior Platform',
+    kicker: 'Website, CMS and RAG assistant',
+    tracks: ['AI & ML', 'Full-Stack'],
     year: '2025 — 2026',
     summary:
-      'The chat layer: a retrieval agent that answers anything about the institute — admissions, fees, faculty, events — grounded in the site it sits on, with an intent router that keeps most queries off the LLM entirely. The website it reads from is the next entry.',
-    bullets: [
-      'Ingestion pipeline of 11 scrapers across 24 public JSON APIs, a BFS website crawler and a PDF ingestor; paragraph-aware 512-word chunks with 64-word overlap.',
-      '384-dim all-MiniLM-L6-v2 embeddings in PostgreSQL/pgvector behind an HNSW cosine index — migrated off ChromaDB to fix Cloud Run cold-start data loss.',
-      'Zero-LLM-cost intent router over 18 categories and 118 keywords dispatching to a SQL tool, category-filtered semantic search or direct chat.',
-      'Cascading retrieval fallbacks, anti-hallucination guardrails, exponential-backoff retries and SSE token streaming with page-link suggestions.',
+      "The institute's entire production surface, built and shipped as one system: the public website, the admin CMS that edits it in place, and the retrieval agent that answers questions about it. 340+ endpoints behind 164 routes, with the whole thing deployed on Cloud Run and Vercel.",
+    groups: [
+      {
+        label: 'The website and CMS',
+        bullets: [
+          '164 routes, 64 public pages, 17 admin modules and a dynamic-page route so admin-created URLs ship without a redeploy; dark mode, Framer Motion, GA4 and Vercel Analytics.',
+          'Performance: 127 lazy-loaded routes, manual vendor/admin chunking into 97 chunks so admin code never reaches visitors, viewport-deferred home sections, lazy images, immutable asset caching.',
+          'SEO: a zero-dependency prerender script emitting static HTML with per-route meta for 95 routes, a dynamic sitemap generator and a custom head manager for OpenGraph, Twitter cards and JSON-LD.',
+          'Admin CMS UI: draft/publish editor with 6 block types, live in-place editing on the public site via contentEditable with debounced saves and cross-tab sync, scope-gated components over 60 RBAC scopes, Axios single-flight JWT refresh.',
+        ],
+      },
+      {
+        label: 'The AI assistant',
+        bullets: [
+          'Ingestion pipeline of 11 scrapers across 24 public JSON APIs, a BFS website crawler and a PDF ingestor; paragraph-aware 512-word chunks with 64-word overlap.',
+          '384-dim all-MiniLM-L6-v2 embeddings in PostgreSQL/pgvector behind an HNSW cosine index — migrated off ChromaDB to fix Cloud Run cold-start data loss.',
+          'Zero-LLM-cost intent router over 18 categories and 118 keywords dispatching to a SQL tool, category-filtered semantic search or direct chat.',
+          'Cascading retrieval fallbacks, anti-hallucination guardrails, exponential-backoff retries and SSE token streaming with page-link suggestions.',
+        ],
+      },
+      {
+        label: 'Platform and delivery',
+        bullets: [
+          '340+ REST endpoints over 70 SQLAlchemy models, with RBAC across 60 granular scopes and 22 role presets.',
+          'JWT access/refresh rotation, Argon2 hashing, brute-force lockout, audit logging and Redis-backed rate limiting, covered by a pytest suite.',
+          'Dockerized API on Google Cloud Run via Cloud Build CI/CD, Supabase PostgreSQL, Cloudflare R2 storage, Redis read-through caching, prerendered React frontend on Vercel.',
+        ],
+      },
     ],
     metrics: [
+      { n: '340+', l: 'REST endpoints' },
+      { n: '164', l: 'routes' },
+      { n: '60', l: 'RBAC scopes' },
       { n: '11', l: 'scrapers' },
       { n: '118', l: 'router keywords' },
-      { n: '18', l: 'intent categories' },
+      { n: '95', l: 'prerendered pages' },
     ],
-    stack: ['LangChain', 'Sentence Transformers', 'pgvector', 'Llama 3.1 70B', 'FastAPI'],
+    stack: [
+      'React 19', 'Vite 7', 'Tailwind CSS', 'TanStack Query', 'FastAPI', 'PostgreSQL',
+      'pgvector', 'Redis', 'LangChain', 'Sentence Transformers', 'Llama 3.1 70B',
+      'Docker', 'Cloud Run', 'Vercel',
+    ],
     live: 'https://itmgoi.in',
-    liveLabel: 'Ask the assistant',
+    liveLabel: 'Visit itmgoi.in',
     repo: null,
     flagship: true,
   },
@@ -146,7 +174,7 @@ export const projects = [
     id: 'ithaas',
     title: 'IthaasAI',
     kicker: 'Fine-tuned Indian history chatbot',
-    track: 'AI & ML',
+    tracks: ['AI & ML'],
     year: '2026',
     summary:
       'A Llama-3.2-3B-Instruct adapter trained on curated Indian-history data and published to the Hugging Face Hub, then paired with retrieval so every answer cites its source.',
@@ -167,36 +195,10 @@ export const projects = [
     flagship: true,
   },
   {
-    id: 'itm-site',
-    title: 'itmgoi.in',
-    kicker: 'The platform underneath',
-    family: 'ITM platform — 2 of 2',
-    track: 'Full-Stack',
-    year: '2025 — 2026',
-    summary:
-      "The institute's actual website and the admin CMS behind it — 164 routes, editable in place on the live page, with admin-created URLs going live without a redeploy. This is the product the assistant above answers questions about.",
-    bullets: [
-      '164 routes, 64 public pages, 17 admin modules and a dynamic-page route so admin-created URLs ship without a redeploy; dark mode, Framer Motion, GA4 and Vercel Analytics.',
-      'Performance: 127 lazy-loaded routes, manual vendor/admin chunking into 97 chunks so admin code never reaches visitors, viewport-deferred home sections, lazy images, immutable asset caching.',
-      'SEO: a zero-dependency prerender script emitting static HTML with per-route meta for 95 routes, a dynamic sitemap generator and a custom head manager for OpenGraph, Twitter cards and JSON-LD.',
-      'Admin CMS UI: draft/publish editor with 6 block types, live in-place editing on the public site via contentEditable with debounced saves and cross-tab sync, scope-gated components over 60 RBAC scopes, Axios single-flight JWT refresh.',
-    ],
-    metrics: [
-      { n: '164', l: 'routes' },
-      { n: '97', l: 'build chunks' },
-      { n: '95', l: 'prerendered pages' },
-    ],
-    stack: ['React 19', 'Vite 7', 'Tailwind CSS', 'TanStack Query', 'FastAPI', 'Vercel'],
-    live: 'https://itmgoi.in',
-    liveLabel: 'Visit itmgoi.in',
-    repo: null,
-    flagship: true,
-  },
-  {
     id: 'vnotes',
     title: 'VNotes',
     kicker: 'AI YouTube notes generator',
-    track: 'AI & ML',
+    tracks: ['AI & ML'],
     year: '2026',
     summary:
       "Paste a YouTube URL, get structured study notes. Captions when they exist, Whisper when they don't, then an LLM that writes LaTeX-aware Markdown with chapters and action items.",
@@ -220,7 +222,7 @@ export const projects = [
     id: 'testhub',
     title: 'TestHub',
     kicker: 'Secure online exam platform',
-    track: 'Full-Stack',
+    tracks: ['Full-Stack'],
     year: '2026',
     summary:
       'A proctored exam platform where the browser is treated as hostile: eight cheat signals on the client, but every deadline, score and answer boundary enforced on the server.',
@@ -245,7 +247,7 @@ export const projects = [
     id: 'soundify',
     title: 'Soundify',
     kicker: 'Music streaming platform',
-    track: 'Full-Stack',
+    tracks: ['Full-Stack'],
     year: '2026',
     summary:
       'A premium music streaming client: a context-aware player with shuffle, repeat, mute and a dynamic queue, backed by Last.fm search and charts.',
@@ -270,7 +272,7 @@ export const projects = [
     id: 'agrione',
     title: 'AgriOne',
     kicker: 'AI-assisted smart farming',
-    track: 'Full-Stack',
+    tracks: ['Full-Stack'],
     year: '2025 — 2026',
     summary:
       'An agriculture platform that turns crop data into plain-language recommendations for farmers, with Gemini doing the analysis and Firebase holding the state.',
@@ -295,7 +297,7 @@ export const projects = [
     id: 'ai-ide',
     title: 'AI IDE',
     kicker: 'Browser-based code editor',
-    track: 'Full-Stack',
+    tracks: ['Full-Stack'],
     year: '2025 — 2026',
     summary:
       'A VS Code-shaped IDE that runs in the browser: Monaco for editing, a real terminal over WebSocket, and an AI assistant that streams its answers into a side panel.',
@@ -320,7 +322,7 @@ export const projects = [
     id: 'movies',
     title: 'Movie Recommendation App',
     kicker: 'Three APIs, one Flask app',
-    track: 'Full-Stack',
+    tracks: ['Full-Stack'],
     year: '2025',
     summary:
       'A server-rendered Flask app stitching TMDB, OMDb and the YouTube Data v3 API into search, recommendations and detail pages with trailers.',

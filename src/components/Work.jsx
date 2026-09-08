@@ -6,6 +6,19 @@ import { alsoBuilt, github, projects } from '../data/content';
 
 const TRACKS = ['All', 'AI & ML', 'Full-Stack'];
 
+function BulletList({ items }) {
+  return (
+    <ul className="space-y-3">
+      {items.map((b, i) => (
+        <li key={i} className="flex gap-3 text-[0.9rem] leading-relaxed text-ink-soft">
+          <span className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-ember/70" />
+          {b}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function ProjectRow({ p, n, open, onToggle }) {
   return (
     <div className="group border-b border-line">
@@ -19,10 +32,10 @@ function ProjectRow({ p, n, open, onToggle }) {
         </span>
 
         <span className="min-w-0 flex-1">
-          {/* the two ITM entries are halves of one platform, not a duplicate */}
-          {p.family && (
+          {/* a project spanning both tracks says so, rather than picking one */}
+          {p.tracks.length > 1 && (
             <span className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-ember/25 bg-ember/8 px-2.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-ember">
-              {p.family}
+              {p.tracks.join(' + ')}
             </span>
           )}
           <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -65,18 +78,25 @@ function ProjectRow({ p, n, open, onToggle }) {
           >
             <div className="grid gap-10 pb-10 md:grid-cols-12 md:pl-[3.1rem]">
               <div className="md:col-span-7">
-                <ul className="space-y-3">
-                  {p.bullets.map((b, i) => (
-                    <li
-                      key={i}
-                      className="flex gap-3 text-[0.9rem] leading-relaxed text-ink-soft"
-                    >
-                      <span className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-ember/70" />
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-6 flex flex-wrap gap-2">
+                {/* A project big enough to have parts lists them under headings;
+                    everything else is one flat list of bullets. */}
+                {p.groups ? (
+                  <div className="space-y-7">
+                    {p.groups.map((g) => (
+                      <div key={g.label}>
+                        <p className="mb-3 flex items-center gap-3 font-mono text-[0.64rem] uppercase tracking-[0.18em] text-ember">
+                          {g.label}
+                          <span className="h-px flex-1 bg-line" aria-hidden="true" />
+                        </p>
+                        <BulletList items={g.bullets} />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <BulletList items={p.bullets} />
+                )}
+
+                <div className="mt-7 flex flex-wrap gap-2">
                   {p.stack.map((s) => (
                     <Pill key={s}>{s}</Pill>
                   ))}
@@ -136,7 +156,7 @@ export default function Work() {
   const [open, setOpen] = useState(projects[0].id);
 
   const shown = useMemo(
-    () => (track === 'All' ? projects : projects.filter((p) => p.track === track)),
+    () => (track === 'All' ? projects : projects.filter((p) => p.tracks.includes(track))),
     [track]
   );
 
@@ -145,7 +165,7 @@ export default function Work() {
       id="work"
       index={3}
       title="Selected work"
-      lead="Nine systems that reached a URL, a model hub, or a production server. Open a row for the engineering detail."
+      lead="Eight systems that reached a URL, a model hub, or a production server. Open a row for the engineering detail."
     >
       <Reveal>
         <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -161,7 +181,9 @@ export default function Work() {
             >
               {t}
               <span className="ml-2 opacity-50">
-                {t === 'All' ? projects.length : projects.filter((p) => p.track === t).length}
+                {t === 'All'
+                  ? projects.length
+                  : projects.filter((p) => p.tracks.includes(t)).length}
               </span>
             </button>
           ))}
