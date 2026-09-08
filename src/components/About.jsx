@@ -1,74 +1,107 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Code2, Database, Brain, Globe, MapPin } from 'lucide-react';
+import { Marquee, Reveal, Section } from './ui';
+import { about, marquee, profile } from '../data/content';
+import { asset } from '../lib/asset';
 
 export default function About() {
-  const cards = [
-    {
-      title: "Education",
-      desc: "B.Tech CSE (Data Science) at ITM Gwalior",
-      icon: <BookOpen className="text-blue-400" size={24} />
-    },
-    {
-      title: "Interests",
-      desc: "Machine Learning, Deep Learning, & Data Apps",
-      icon: <Brain className="text-purple-400" size={24} />
-    },
-    {
-      title: "Stack",
-      desc: "Python, MERN Stack, and SQL",
-      icon: <Code2 className="text-green-400" size={24} />
-    },
-    {
-      title: "Projects",
-      desc: "ML Models, Dashboards, Full-Stack Apps",
-      icon: <Database className="text-yellow-400" size={24} />
-    },
-    {
-      title: "Goals",
-      desc: "Open to Collaborations & Internships",
-      icon: <Globe className="text-pink-400" size={24} />
-    },
-    {
-      title: "Location",
-      desc: "Based in Gwalior, India",
-      icon: <MapPin className="text-red-400" size={24} />
-    }
-  ];
-
   return (
-    <section id="about" className="py-20 px-4 max-w-6xl mx-auto relative z-10 w-full min-h-[80vh] flex flex-col justify-center">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true, margin: "-100px" }}
-      >
-        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-secondary">
-            About Me
-          </span>
-        </h2>
-        <div className="w-24 h-1 bg-accent mx-auto mb-16 rounded-full opacity-60"></div>
+    <>
+      {/* tech strip — one continuous line between the hero and the story */}
+      <div className="border-y border-line py-6">
+        <Marquee items={marquee} speed={52} />
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {cards.map((card, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm hover:bg-white/10 hover:-translate-y-2 hover:border-accent/50 transition-all duration-300 group"
-            >
-              <div className="w-12 h-12 bg-black/30 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                {card.icon}
+      <Section
+        id="about"
+        index={1}
+        title="The short version"
+        lead="Two internships, one production platform, and a habit of finishing the boring 80% of a system."
+      >
+        <div className="grid gap-14 lg:grid-cols-12">
+          {/* story */}
+          <div className="lg:col-span-7">
+            <div className="space-y-6">
+              {about.paragraphs.map((p, i) => (
+                <Reveal key={i} delay={i * 0.08}>
+                  <p
+                    className={
+                      i === 0
+                        ? 'text-lg leading-relaxed text-ink md:text-xl'
+                        : 'leading-relaxed text-ink-soft'
+                    }
+                  >
+                    {p}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal delay={0.25}>
+              <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-6">
+                <span className="display text-2xl text-ink">{profile.name}</span>
+                <span className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-ink-faint">
+                  {profile.roles[0]} · {profile.roles[1]}
+                </span>
               </div>
-              <h3 className="text-xl font-bold mb-2 text-white">{card.title}</h3>
-              <p className="text-secondary/80 leading-relaxed">{card.desc}</p>
-            </motion.div>
+            </Reveal>
+          </div>
+
+          {/* duotone portrait — same photo, different light */}
+          <Reveal delay={0.12} className="lg:col-span-5">
+            <figure className="relative">
+              <div className="relative overflow-hidden rounded-3xl border border-line bg-sunken">
+                <div
+                  className="absolute inset-0 z-10"
+                  style={{
+                    background:
+                      'linear-gradient(150deg, var(--c-ember) 0%, var(--c-rust) 55%, var(--c-sunken) 100%)',
+                    mixBlendMode: 'color',
+                    opacity: 0.55,
+                  }}
+                  aria-hidden="true"
+                />
+                <img
+                  src={asset("/sumit-portrait.webp")}
+                  alt="Sumit Sharma"
+                  width={880}
+                  height={1036}
+                  loading="lazy"
+                  className="block aspect-[4/5] w-full object-cover object-[50%_18%] contrast-[1.08] saturate-[0.7]"
+                />
+                <motion.div
+                  className="absolute inset-x-0 z-20 h-24"
+                  style={{
+                    background:
+                      'linear-gradient(to bottom, transparent, color-mix(in oklab, var(--c-ember) 30%, transparent), transparent)',
+                  }}
+                  animate={{ y: ['-15%', '420%'] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+                  aria-hidden="true"
+                />
+              </div>
+              <figcaption className="mt-4 flex items-baseline justify-between gap-4 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-ink-faint">
+                <span>Gwalior, MP</span>
+                <span className="text-ember">2027 batch</span>
+              </figcaption>
+            </figure>
+          </Reveal>
+        </div>
+
+        {/* fact grid */}
+        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+          {about.facts.map((f, i) => (
+            <Reveal key={f.k} delay={i * 0.05}>
+              <div className="group h-full bg-ground/60 p-6 transition-colors hover:bg-raise/70">
+                <span className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-ember">
+                  {f.k}
+                </span>
+                <p className="mt-3 text-[0.98rem] leading-snug text-ink">{f.v}</p>
+                <p className="mt-2 text-[0.78rem] text-ink-faint">{f.hint}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
-      </motion.div>
-    </section>
+      </Section>
+    </>
   );
 }

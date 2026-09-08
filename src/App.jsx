@@ -1,47 +1,74 @@
-import { BrowserRouter as Router } from 'react-router-dom';
-import Background3D from './components/Background3D';
-import Navbar from './components/Navbar';
+import { Suspense, lazy, useCallback, useEffect, useState } from 'react';
+import { ScrollProgress, Spotlight } from './components/Chrome';
+import Nav from './components/Nav';
 import Hero from './components/Hero';
 import About from './components/About';
-import TechStack from './components/TechStack';
-import Projects from './components/Projects';
-import Education from './components/Education';
+import Experience from './components/Experience';
+import Work from './components/Work';
+import Skills from './components/Skills';
+import Research from './components/Research';
 import Contact from './components/Contact';
 
-function App() {
-  return (
-    <Router>
-      <div className="relative w-full min-h-screen bg-background text-secondary font-sans overflow-x-hidden selection:bg-accent/30 selection:text-white">
-        {/* Fixed 3D Background */}
-        <div className="fixed inset-0 z-0">
-          <Background3D />
-        </div>
+// three.js is the heaviest thing on the page and it is pure decoration,
+// so it loads after the hero has painted.
+const EmberField = lazy(() => import('./components/EmberField'));
 
-        {/* Dynamic Navigation */}
-        <Navbar />
+const STORAGE_KEY = 'sumit-theme';
 
-        {/* Content Overlay */}
-        <div className="relative z-10 w-full flex flex-col gap-20 pb-20 pt-16">
-          <Hero />
-          
-          <div className="h-px w-full max-w-6xl mx-auto bg-gradient-to-r from-transparent via-white/10 to-transparent my-10" />
-          <About />
-          
-          <div className="h-px w-full max-w-6xl mx-auto bg-gradient-to-r from-transparent via-white/10 to-transparent my-10" />
-          <TechStack />
-          
-          <div className="h-px w-full max-w-6xl mx-auto bg-gradient-to-r from-transparent via-white/10 to-transparent my-10" />
-          <Projects />
-          
-          <div className="h-px w-full max-w-6xl mx-auto bg-gradient-to-r from-transparent via-white/10 to-transparent my-10" />
-          <Education />
-          
-          <div className="h-px w-full max-w-6xl mx-auto bg-gradient-to-r from-transparent via-white/10 to-transparent mt-10 mb-20" />
-          <Contact />
-        </div>
-      </div>
-    </Router>
-  );
+function useTheme() {
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === 'undefined') return 'dark';
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch {
+      /* private mode — the choice just won't persist */
+    }
+  }, [theme]);
+
+  const toggle = useCallback(() => setTheme((t) => (t === 'dark' ? 'light' : 'dark')), []);
+  return [theme, toggle];
 }
 
-export default App;
+export default function App() {
+  const [theme, toggleTheme] = useTheme();
+  const [ambient, setAmbient] = useState(false);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setAmbient(true), 900);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  return (
+    <div className="grain relative min-h-screen overflow-x-hidden">
+      {/* ambient layers */}
+      <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
+        {ambient && (
+          <Suspense fallback={null}>
+            <EmberField theme={theme} />
+          </Suspense>
+        )}
+      </div>
+      <Spotlight />
+      <ScrollProgress />
+
+      <Nav theme={theme} onToggleTheme={toggleTheme} />
+
+      <main className="relative z-10">
+        <Hero />
+        <About />
+        <Experience />
+        <Work />
+        <Skills />
+        <Research />
+        <Contact />
+      </main>
+    </div>
+  );
+}

@@ -1,16 +1,182 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: #1e293b;
-  --color-secondary: #f8fafc;
-  --color-accent: #2dd4bf;
-  --color-background-soft: #0f172a;
-  --color-background: #020617;
-  --font-sans: "Outfit", sans-serif;
+/* ============================================================
+   Design system — "cinematic warm"
+   Palette derived from the portrait: amber key light on
+   near-black warm ground. Two themes, one set of semantic
+   tokens; @theme inline so utilities resolve the live vars.
+   ============================================================ */
+
+@theme inline {
+  --color-ground: var(--c-ground);
+  --color-raise: var(--c-raise);
+  --color-sunken: var(--c-sunken);
+  --color-line: var(--c-line);
+  --color-ink: var(--c-ink);
+  --color-ink-soft: var(--c-ink-soft);
+  --color-ink-faint: var(--c-ink-faint);
+  --color-ember: var(--c-ember);
+  --color-ember-deep: var(--c-ember-deep);
+  --color-rust: var(--c-rust);
+
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: dark;
+  --c-ground: #0a0705;
+  --c-raise: #14100b;
+  --c-sunken: #050403;
+  --c-line: #2b2118;
+  --c-ink: #f6efe4;
+  --c-ink-soft: #c3b6a5;
+  --c-ink-faint: #8a7c6b;
+  --c-ember: #e9a53f;
+  --c-ember-deep: #c97f28;
+  --c-rust: #b4552f;
+  --glow: 0.5;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --c-ground: #f7f2e9;
+  --c-raise: #fffdf8;
+  --c-sunken: #ebe3d5;
+  --c-line: #ddd1bd;
+  --c-ink: #1b1410;
+  --c-ink-soft: #55473a;
+  /* darker than the dark-theme equivalent: small mono labels on a light
+     ground need ~4.5:1, and #8d7c69 only reached 3.4:1 */
+  --c-ink-faint: #73634f;
+  --c-ember: #a8641a;
+  --c-ember-deep: #8a4f12;
+  --c-rust: #9c4423;
+  --glow: 0.14;
 }
 
 @layer base {
+  * { border-color: var(--c-line); }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
-    @apply bg-background text-secondary m-0 p-0 overflow-x-hidden font-sans;
+    margin: 0;
+    background: var(--c-ground);
+    color: var(--c-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv01";
+    overflow-x: hidden;
+    transition: background-color .5s ease, color .5s ease;
+  }
+
+  ::selection {
+    background: var(--c-ember);
+    color: var(--c-sunken);
+  }
+
+  h1, h2, h3 { font-weight: 400; }
+
+  /* Thin warm scrollbar */
+  ::-webkit-scrollbar { width: 9px; }
+  ::-webkit-scrollbar-track { background: var(--c-sunken); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--c-ember-deep);
+    border-radius: 99px;
+    border: 2px solid var(--c-sunken);
+  }
+}
+
+/* ---------- Reusable primitives ---------- */
+
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-ember);
+}
+
+/* Film grain — sits over everything, gives the page the same
+   texture as the portrait so the photo doesn't read as pasted on */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 7s steps(6) infinite;
+}
+
+@keyframes grain-shift {
+  0%,100% { transform: translate(0,0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -2%); }
+  80% { transform: translate(3%, 1%); }
+}
+
+/* Marquee */
+@keyframes slide-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: slide-left var(--speed, 42s) linear infinite;
+}
+.marquee-mask {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* Soft ember bloom behind elements */
+.bloom {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--c-ember) 55%, transparent),
+    transparent 78%
+  );
+  opacity: var(--glow);
+}
+
+/* Underline that draws in on hover */
+.link-draw {
+  position: relative;
+}
+.link-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s cubic-bezier(.2,.7,.2,1);
+}
+.link-draw:hover::after { transform: scaleX(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee-track { animation: none; }
+  .grain::after { animation: none; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
   }
 }

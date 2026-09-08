@@ -1,13 +1,71 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sumit Sharma | Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <title>Sumit Sharma — AI/ML & Full-Stack Engineer</title>
+    <meta
+      name="description"
+      content="Sumit Sharma builds production generative AI: LoRA fine-tuning on Llama 3.2, RAG over pgvector and FAISS, Whisper pipelines — plus the React and FastAPI products around them."
+    />
+    <meta name="author" content="Sumit Sharma" />
+    <meta name="theme-color" content="#0a0705" />
+
+    <link rel="icon" href="/sumit-portrait-sm.webp" type="image/webp" />
+    <link rel="apple-touch-icon" href="/sumit-portrait-sm.webp" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sumit Sharma — AI/ML & Full-Stack Engineer" />
+    <meta
+      property="og:description"
+      content="Production RAG agents, LoRA fine-tuned models, and a live institute platform with 340+ endpoints."
+    />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sumit Sharma — AI/ML & Full-Stack Engineer" />
+    <meta name="twitter:image" content="/og-image.jpg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      // Apply the saved theme before first paint so there is no flash.
+      (function () {
+        try {
+          var t = localStorage.getItem('sumit-theme');
+          if (!t) {
+            t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          }
+          document.documentElement.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Sumit Sharma",
+        "jobTitle": "AI/ML Engineer",
+        "email": "sharmasumit716210@gmail.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Gwalior", "addressRegion": "Madhya Pradesh", "addressCountry": "IN" },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Institute of Technology and Management, Gwalior"
+        },
+        "knowsAbout": ["Machine Learning", "Retrieval-Augmented Generation", "LoRA fine-tuning", "PyTorch", "FastAPI", "React"],
+        "sameAs": [
+          "https://github.com/Sumit7162",
+          "https://www.linkedin.com/in/sumit-sharma-a021862a6"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
