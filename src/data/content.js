@@ -118,7 +118,7 @@ export const experience = [
 export const projects = [
   {
     id: 'itm-platform',
-    title: 'ITM Gwalior Platform',
+    title: 'ITM Gwalior',
     kicker: 'Website, CMS and RAG assistant',
     tracks: ['AI & ML', 'Full-Stack'],
     year: '2025 — 2026',
