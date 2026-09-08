@@ -34,7 +34,7 @@ export const profile = {
 export const stats = [
   { value: 340, suffix: '+', label: 'REST endpoints shipped' },
   { value: 164, suffix: '', label: 'routes live in production' },
-  { value: 8, suffix: '', label: 'projects live on a URL' },
+  { value: 9, suffix: '', label: 'projects live on a URL' },
   { value: 2, suffix: '', label: 'research papers published' },
 ];
 
@@ -49,9 +49,9 @@ export const stats = [
  *
  * `deployed` counts distinct URLs that answered HTTP 200 when checked:
  * itmgoi.in, test-hub-seven.vercel.app, vnotes-lime.vercel.app,
- * soundify-roan.vercel.app, cosmos-peach-alpha.vercel.app,
- * agri-one-flax.vercel.app, run-code.lovable.app and
- * portfolio-five-sigma-49.vercel.app.
+ * soundify-roan.vercel.app, ai-ide-upendra.vercel.app,
+ * cosmos-peach-alpha.vercel.app, agri-one-flax.vercel.app,
+ * run-code.lovable.app and portfolio-five-sigma-49.vercel.app.
  */
 export const github = {
   url: 'https://github.com/Sumit7162',
@@ -60,7 +60,7 @@ export const github = {
   counts: [
     { n: 23, label: 'public repositories' },
     { n: 20, label: 'written by me', note: 'the other 3 are forks' },
-    { n: 8, label: 'deployed and reachable', note: 'checked, not claimed' },
+    { n: 9, label: 'deployed and reachable', note: 'checked, not claimed' },
     { n: 6, label: 'languages in use', note: 'Python, TS, JS, C++, HTML, Jupyter' },
   ],
 };
@@ -311,7 +311,8 @@ export const projects = [
       { n: 'SSE', l: 'streamed chat' },
     ],
     stack: ['React 19', 'Monaco Editor', 'FastAPI', 'Hugging Face API', 'Xterm.js', 'WebSocket'],
-    live: null,
+    live: 'https://ai-ide-upendra.vercel.app',
+    liveLabel: 'Open the IDE',
     repo: null,
     flagship: false,
   },
